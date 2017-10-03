@@ -1,0 +1,65 @@
+- hosts: localhost
+  
+  
+  vars: 
+    docker_user: ricardo
+
+  tasks:
+  #- name: Upgrade all packages to the latest version
+  #  apt:
+  #    update_cache: yes
+
+  - name: remove unofficial docker
+    apt:
+      name={{item}}
+    state: absent
+    with_items:
+      - docker
+  #    - docker-common
+  #    - container-selinux
+  #    - docker-selinux
+
+  - name: Upgrade all packages to the latest version
+    apt:
+      name={{item}} 
+    state: latest
+    with_items:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+
+  - name: Get docker apt key
+    apt_key: 
+      url: https://download.docker.com/linux/ubuntu/gpg
+ 
+  - name: "Install docker repository"
+    apt_repository:
+      repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu  xenial stable
+    
+
+  - name: Upgrade all packages to the latest version
+    apt:
+      update_cache: yes
+  
+  - name: install docker
+    apt:
+      package: docker-ce
+      state: latest
+    
+  - name: Docker | start
+    service:
+      name: docker
+      state: started
+      enabled: true
+   
+  - name: Create docker group
+    group: 
+      name: docker
+      state: present
+
+  - name: Add user to docker group
+    user:
+      name: "{{docker_user}}"
+      groups: docker

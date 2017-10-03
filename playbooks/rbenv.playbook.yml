@@ -1,0 +1,30 @@
+# ansible-playbook playbooks/vscode.playbook.yml --become --ask-become-pass
+
+- hosts: localhost
+  tasks:
+  - name: Get rbenv files
+    git:
+      repo: 'https://github.com/rbenv/rbenv.git'
+      dest: ~/.rbenv
+    become: false
+
+  - name: Try to compile dynamic bash extension to speed up rbenv
+    command: sh -c 'cd ~/.rbenv && src/configure && make -C src' 
+    become: false
+
+  - name: Add rbenv to PATH in bash_profile
+    command: sh -c 'echo export PATH="$HOME/.rbenv/bin:$PATH" >> ~/.bash_profile'
+    become: false
+
+  - name: Add rbenv to PATH in .bashrc
+    command: sh -c 'echo export PATH="$HOME/.rbenv/bin:$PATH" >> ~/.bashrc'
+    become: false
+  
+  - name: Reload env
+    command: sh -c '. ~/.bash_profile'
+    become: false
+
+  - name: Init rbenv
+    command: sh -c '~/.rbenv/bin/rbenv init'
+    become: false
+  

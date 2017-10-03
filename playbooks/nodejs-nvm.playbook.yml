@@ -1,0 +1,12 @@
+# ansible-playbook playbooks/vscode.playbook.yml --become --ask-become-pass
+
+- hosts: localhost
+  tasks:
+  - name: Get NVM installer
+    get_url:
+      url: https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh
+      dest: /tmp/nvm_install.sh
+
+  - name: Install NVM
+    command: /bin/bash /tmp/nvm_install.sh
+    become: false

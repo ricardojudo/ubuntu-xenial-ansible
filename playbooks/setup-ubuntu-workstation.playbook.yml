@@ -1,0 +1,16 @@
+# Run as ansible-playbook playbooks/setup-ubuntu-workstation.playbook.yml --become --ask-become-pass
+
+#- import_playbook: hola.playbook.yml
+- import_playbook: vscode.playbook.yml
+#- import_playbook: sublime.playbook.yml
+#- import_playbook: postgres.playbook.yml
+#- import_playbook: mongodb.playbook.yml
+#- import_playbook: redis.playbook.yml
+#- import_playbook: python.playbook.yml
+#- import_playbook: nodejs.playbook.yml
+#- import_playbook: java.playbook.yml
+#- import_playbook: jenkins.playbook.yml
+#- import_playbook: ruby.playbook.yml
+#- import_playbook: awscli.playbook.yml
+#- import_playbook: docker.playbook.yml
+#- import_playbook: vagrant.playbook.yml

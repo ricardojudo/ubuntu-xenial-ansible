@@ -1,0 +1,26 @@
+- hosts: mmex-demoserver
+  tasks:
+  - name: copy nginx.repo
+    copy: 
+      src: ../resources/yum/nginx.repo
+      dest: /etc/yum.repos.d/nginx.repo
+      mode: 0644
+    become: yes
+  - name: upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+    become: yes
+
+  - name: install the nginx rpm from a remote repo
+    yum:  
+      name: nginx
+      state: latest
+    become: yes
+
+  - name: NGINX | Stating NGINX
+    service: 
+      name: nginx
+      state: started
+    become: yes
+

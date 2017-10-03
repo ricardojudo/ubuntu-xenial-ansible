@@ -1,0 +1,30 @@
+# ansible-playbook playbooks/vscode.playbook.yml --become --ask-become-pass
+
+- hosts: localhost
+
+  vars:
+    maven_version: 3.5.0
+
+  tasks:
+  - name: Get maven package
+    get_url:
+      url: 'http://www-us.apache.org/dist/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz'
+      dest: /tmp/apache-maven-{{maven_version}}.tar.gz
+
+  - name: Mkdir maven dest
+    file:
+      path: /opt/apache/
+      state: directory
+
+  - name: Unpackage maven files
+    unarchive: 
+      src: /tmp/apache-maven-{{maven_version}}.tar.gz
+      dest: /opt/apache/
+
+  - name: Append to path
+    command: sh -c "echo export PATH=$PATH:/opt/apache/apache-maven-{{maven_version}}/bin >> ~/.bash_profile && . ~/.bash_profile"
+    become: false
+
+  - name: Append to path
+    command: sh -c "echo export PATH=$PATH:/opt/apache/apache-maven-{{maven_version}}/bin >> ~/.bashrc"
+    become: false

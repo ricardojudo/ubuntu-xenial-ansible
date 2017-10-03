@@ -1,0 +1,9 @@
+- hosts: mmex-demoserver
+  tasks:
+  - name: Download td-agent installation script
+    get_url: 
+      url: https://toolbelt.treasuredata.com/sh/install-redhat-td-agent2.sh
+      dest: /tmp/td-agent2.sh
+  - name: Install td-agent2
+    command: /bin/bash /tmp/td-agent2.sh
+  

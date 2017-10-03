@@ -1,0 +1,44 @@
+# ansible-playbook playbooks/vscode.playbook.yml --become --ask-become-pass
+
+- hosts: localhost
+  vars:
+    postrgres_version: 9.6
+  tasks:
+  - name: Create the file /etc/apt/sources.list.d/pgdg.list, and add a line for the repository
+    apt_repository:
+      repo: deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main
+      state: present
+
+  - name: Import the repository signing key, and update the package lists
+    apt_key: 
+      url:  https://www.postgresql.org/media/keys/ACCC4CF8.asc 
+
+  - name: Upgrade all packages to the latest version
+    apt:
+      update_cache: yes
+
+  - name: Install Postgres {{postrgres_version}}
+    apt:
+      pkg: "postgresql-{{postrgres_version}}"
+      state: "latest"
+  
+  - name: Install Postgres Client {{postrgres_version}}
+    apt:
+      pkg: "postgresql-client-{{postrgres_version}}"
+      state: "latest"
+
+  - name: Install Postgres Contrib {{postrgres_version}}
+    apt:
+      pkg: "postgresql-contrib-{{postrgres_version}}"
+      state: "latest"
+
+  - name: Install libpq-dev
+    apt:
+      pkg: "libpq-dev"
+      state: "latest"
+  
+  - name: Install python-psycopg2
+    apt:
+      pkg: "python-psycopg2"
+      state: "latest"
+  
